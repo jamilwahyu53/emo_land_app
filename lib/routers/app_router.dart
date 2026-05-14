@@ -1,3 +1,4 @@
+import 'package:edu_app/screens/detectionMode.dart';
 import 'package:edu_app/screens/forgotPass.dart';
 import 'package:edu_app/screens/playForm.dart';
 import 'package:edu_app/screens/playingMode.dart';
@@ -34,6 +35,10 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/playingMode',
           builder: (context, state) => PlayingMode(),
+        ),
+        GoRoute(
+          path: '/detectionMode',
+          builder: (context, state) => DetectionMode(),
         ),
       ],
     ),

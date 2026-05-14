@@ -3,6 +3,7 @@ import 'package:edu_app/widgets/buttonKsm.dart';
 import 'package:edu_app/widgets/generalField.dart';
 import 'package:edu_app/widgets/textLink.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class PlayingMode extends StatelessWidget {
 
@@ -35,32 +36,151 @@ class PlayingMode extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'SELAMAT',
+                      'Pilih Metode',
                       style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      'DATANG',
+                      'PERMAINAN',
                       style: Theme.of(context).textTheme.headlineMedium,
                       textAlign: TextAlign.center,
                     ),
-                    Text(
-                      'Temani perjalananmu mengenal emosi dan dirimu sendiri. Main, belajar dan tumbuh bersama!',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.center,
-                    ),
-
+                    
                     SizedBox(height: 32),
 
                     // Tombol Login
-                    CustomButton(
-                      label: "PLAY",
-                      widthBtn: double.infinity,
-                      onPressed: () => Null,
-                    ),
+                    IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
 
-                    //SizedBox(height: 32),
-                    //StatusWidget(count: 1240, label: "Pengguna Aktif")
+                          // CARD KIRI
+                          Expanded(
+                            child: Material(
+                              color: const Color(0xFFFFE1E4),
+                              borderRadius: BorderRadius.circular(20),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () {
+                                  print("Story Mode dipilih");
+                                  // TODO: navigasi / aksi kamu
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFE1E4),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/book.png',
+                                        height: 60,
+                                        width: 90,
+                                      ),
+
+                                      const SizedBox(height: 12),
+
+                                      Text(
+                                        'STORY\nMODE',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 6),
+
+                                      Text(
+                                        'Ikuti cerita rakyat dan Selesaikan tantangannya',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.black54,
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(width: 16),
+
+                          // CARD KANAN
+                          Expanded(
+                            child: Material(
+                              color: const Color(0xFFFFE1E4),
+                              borderRadius: BorderRadius.circular(20),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () {
+                                   context.go('/detectionMode');
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFE1E4),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 10,
+                                        offset: Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/target.png',
+                                        height: 60,
+                                        width: 60,
+                                      ),
+
+                                      const SizedBox(height: 12),
+
+                                      Text(
+                                        'DETECTION MODE',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 6),
+
+                                      Text(
+                                        'Latihan ekspresi dan tingkatkan kemampuanmu',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.black54,
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
 
                   ],
                 ),

@@ -43,16 +43,20 @@ class PlayForm extends StatelessWidget {
                     ),
                     Text(
                       'DATANG',
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontSize: 45,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     Text(
                       'Temani perjalananmu mengenal emosi dan dirimu sendiri. Main, belajar dan tumbuh bersama!',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 16,
+                      ),
                       textAlign: TextAlign.center,
                     ),
 
-                    SizedBox(height: 32),
+                    SizedBox(height: 120),
 
                     // Tombol Login
                     CustomButton(

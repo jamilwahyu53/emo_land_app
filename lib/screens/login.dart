@@ -43,11 +43,9 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Image.asset(
                           'assets/icon_emo_land.png',
-                          width: 150,
-                          height: 150,
+                          width: 200,
+                          fit: BoxFit.contain,
                         ),
-
-                        const SizedBox(height: 10),
 
                         Text(
                           'Masuk Ke Akun',
@@ -60,12 +58,12 @@ class LoginScreen extends StatelessWidget {
 
                     // Email Field
                     GeneralField(
-                      label: "User ID",
+                      label: "Namamu",
                       icon: Icons.account_circle_outlined,
                       controller: controller.usernameController,
                     ),
                     GeneralField(
-                      label: "Password",
+                      label: "Sandi",
                       icon: Icons.lock_clock_outlined,
                       isPassword: true,
                       controller: controller.passwordController,
@@ -79,12 +77,17 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: 32),
 
                     // Tombol Login
-                    CustomButton(
-                      label: "Login",
-                      widthBtn: double.infinity,
-                      onPressed: () => controller.login(context),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () => controller.login(context),
+                        child: Image.asset(
+                          'assets/btn_next.png',
+                          width: 50,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
-
                     //SizedBox(height: 32),
                     //StatusWidget(count: 1240, label: "Pengguna Aktif")
 
