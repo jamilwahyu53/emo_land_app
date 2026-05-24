@@ -1,0 +1,86 @@
+import 'package:edu_app/models/videoModel.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import '../services/postServices.dart';
+import 'package:edu_app/widgets/alertKsm.dart';
+import 'package:go_router/go_router.dart';
+
+
+class VideoController extends GetxController {
+
+  var videos = <VideoModel>[].obs;
+  var isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getVideo();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  Future<void> getVideo() async {
+    
+    final req = VideoModel();
+
+    try {
+      final response = await ApiServiceForm.getList(
+        endpoint: 'get_video',
+        data: req.toJson(),
+        fromJson: (json) => VideoModel.fromJson(json),
+      );
+
+      if (response.status == true && response.data != null) {
+        videos.value = response.data!;
+      } else {
+        print("Data kosong");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> deleteVideo(BuildContext context, String video_id) async {
+    
+    final req = VideoModel(video_id: video_id, url: "", grade: "");
+
+    try {
+      final response = await ApiServiceForm.postModel(
+        endpoint: 'delete_video',
+        data: req.toJson(),
+        fromJson: (json) => VideoModel.fromJson(json),
+      );
+
+      if (response.status == true ) {
+        final newList = List<VideoModel>.from(videos);
+        newList.removeWhere((e) => e.video_id == video_id);
+
+        videos.value = newList;
+       
+      } else {
+        AlertKsm.show(
+          context: context,
+          title: 'Info!',
+          message: response.message,
+          type: AlertType.info,
+        );
+      }
+    } catch (e) {
+      AlertKsm.show(
+          context: context,
+          title: 'Error!',
+          message: e.toString(),
+          type: AlertType.error,
+        );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+}

@@ -1,5 +1,4 @@
 import 'package:edu_app/models/userModel.dart';
-import 'package:edu_app/services/staffServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -8,54 +7,39 @@ import 'package:edu_app/widgets/alertKsm.dart';
 import 'package:go_router/go_router.dart';
 
 
-class LoginController extends GetxController {
+class RegisterController extends GetxController {
 
   final formKey = GlobalKey<FormState>();
 
   final usernameController = TextEditingController();
+  final fullNameController = TextEditingController();
   final passwordController = TextEditingController();
-
-  final storage = StaffServices();
   
-  Future<void> forgotPass(BuildContext context) async {
-    context.go('/forgotPass');
+  Future<void> loginUser(BuildContext context) async {
+    context.go('/login');
   }
 
-  Future<void> login(BuildContext context) async {
+  Future<void> register(BuildContext context) async {
     if (!formKey.currentState!.validate()) {
       return;
     }
 
+    final fullname = fullNameController.text;
     final username = usernameController.text;
     final password = passwordController.text;
 
 
-    final req = UserModel(full_name: username, password: password, user_id: username);
+    final req = UserModel(user_id: username, password: password, full_name: fullname);
     
     try {
-      
-      
       final response = await ApiServiceForm.postModel(
-        endpoint: 'login_emo_land',
+        endpoint: 'register_emo_land',
         data: req.toJson(),
         fromJson: (json) => UserModel.fromJson(json),
       );
 
       if (response.status == true) {
-        await storage.saveStaff(response.data!);
-        /*
-        final getStorage = await storage.getStaff();
-        print(getStorage?.Username);
-        print(getStorage?.Password);
-
-        //await storage.clear();
-
-        print(
-          'Login berhasil, token: ${response.data?.token}, name: ${response.data?.Username}',
-        );
-        */
-        
-        context.go('/playForm');
+        context.go('/login');
       } else {
         AlertKsm.show(
           context: context,
@@ -64,6 +48,7 @@ class LoginController extends GetxController {
           type: AlertType.info,
         );
       }
+    
     } catch (e) {
       AlertKsm.show(
         context: context,
@@ -72,18 +57,16 @@ class LoginController extends GetxController {
         type: AlertType.warning,
       );
     } finally {}
-  }
-
-  Future<void> registerStaff(BuildContext context) async {
     
-    context.go('/registerStaff');
-
   }
+
+  
 
   @override
   void onClose() {
     usernameController.dispose();
     passwordController.dispose();
+    fullNameController.dispose();
     super.onClose();
   }
 

@@ -69,10 +69,20 @@ class LoginScreen extends StatelessWidget {
                       controller: controller.passwordController,
                     ),
 
-                    TextLink(
-                      text: 'Lupa Kata Sandi?',
-                      onTap: () => controller.forgotPass(context),
-                    ), 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextLink(
+                          text: 'Register',
+                          onTap: () => controller.registerStaff(context),
+                        ),
+
+                        TextLink(
+                          text: 'Lupa Kata Sandi?',
+                          onTap: () => controller.forgotPass(context),
+                        ), 
+                      ],
+                    ),
 
                     SizedBox(height: 32),
 

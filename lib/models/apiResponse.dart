@@ -1,5 +1,5 @@
 class ApiResponse<T> {
-  final String status;
+  final bool status;
   final String message;
   final T? data;
 
@@ -11,10 +11,11 @@ class ApiResponse<T> {
 
   factory ApiResponse.fromJson(
     Map<String, dynamic> json,
-    T Function(Map<String, dynamic>) fromJsonT,
+    //T Function(Map<String, dynamic>) fromJsonT,
+    T Function(dynamic json) fromJsonT,
   ) {
     return ApiResponse<T>(
-      status: json['status'] ?? '',
+      status: json['status'] ?? false,
       message: json['message'] ?? '',
       data: json['data'] != null ? fromJsonT(json['data']) : null,
     );

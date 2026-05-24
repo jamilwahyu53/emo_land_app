@@ -1,25 +1,74 @@
+import 'package:edu_app/screens/detectionMode.dart';
+import 'package:edu_app/screens/playForm.dart';
+import 'package:edu_app/widgets/bottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../models/bottomBar.dart';
+import 'package:edu_app/services/staffServices.dart';
+
 
 class Dashboard extends StatefulWidget {
   final Widget? content;
+
   const Dashboard({super.key, this.content});
 
   @override
   _DashboardState createState() => _DashboardState();
+  
 }
 
 class _DashboardState extends State<Dashboard> {
-  String _currentRoute = 'Beranda';
-  String _currentTitle = 'Beranda';
+  
+  String currentRoute = "/playForm";
 
+  final List<Widget> pages = [
+    DetectionMode(),
+    PlayForm(),
+  ];
+
+  final List<NavItem> menuItems = [
+    NavItem(
+      activeIcon: Icons.home,
+      inactiveIcon: Icons.home_outlined,
+      label: 'Home',
+      route: '/playForm',
+    ),
+    NavItem(
+      activeIcon: Icons.play_arrow,
+      inactiveIcon: Icons.play_arrow_outlined,
+      label: 'List Video',
+      route: '/listVideo',
+    ),
+    NavItem(
+      activeIcon: Icons.person,
+      inactiveIcon: Icons.person_outline,
+      label: 'List User',
+      route: '/registerStaff',
+    ),
+    NavItem(
+      activeIcon: Icons.power_off,
+      inactiveIcon: Icons.power_off_outlined,
+      label: 'Logout',
+      route: '/logout',
+    ),
+  ];
+
+  void onTabChanged(String route) {
+    setState(() {
+      currentRoute = route;
+      context.go(route);
+    });
+  }
+
+  final storage = StaffServices();
+  int userAdmin = 0;
 
   Widget _buildDrawerHeader() {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Color.fromARGB(255, 211, 175, 175),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,105 +96,30 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  
+  Future<void> loadUser() async {
+    final user = await storage.getStaff();
+    setState(() {
+      userAdmin = user?.user_id == "admin" ? 1 : 0;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadUser();
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC), // Slate 50 background
-      /*
-      // 1. Custom AppBar (Nexus Style)
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: false,
-        title: Text(
-          _currentTitle,
-          style: const TextStyle(
-            color: Color(0xFF1A73E8),
-            fontWeight: FontWeight.w800,
-            fontFamily: 'IntroHeadR-Base',
-            fontSize: 20,
-          ),
-        ),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu_rounded, color: Color(0xFF1A73E8)),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-      ),
-
-      // 2. Custom Drawer (Nexus Sidebar)
-      
-      drawer: Drawer(
-        width: 280,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        child: Column(
-          children: [
-            // Header: User Profile / App Info
-            _buildDrawerHeader(),
-            
-            const SizedBox(height: 12),
-            
-            // Menu Items List
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                children: _menuItems.map((item) => _buildMenuItem(item)).toList(),
-              ),
-            ),
-
-            // Footer (Versi / App Name)
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  const Divider(color: Color(0xFFF1F5F9)),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF1F5F9),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(Icons.admin_panel_settings, color: Color(0xFF64748B)),
-                      ),
-                      const SizedBox(width: 12),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Jamil Wahyu',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Color(0xFF0F172A),
-                            ),
-                          ),
-                          Text(
-                            'Administrator',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Color(0xFF64748B),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      */
-
       body: widget.content ,
+      bottomNavigationBar: userAdmin == 1 ? BottomNavBar(
+        currentRoute: currentRoute,
+        onTap: (route) => onTabChanged(route),
+        menuItems: menuItems,
+      ) : null,
     );
   }
 }

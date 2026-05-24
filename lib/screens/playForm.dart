@@ -65,9 +65,6 @@ class PlayForm extends StatelessWidget {
                       onPressed: () => context.go('/playingMode'),
                     ),
 
-                    //SizedBox(height: 32),
-                    //StatusWidget(count: 1240, label: "Pengguna Aktif")
-
                   ],
                 ),
               ),
