@@ -2,6 +2,7 @@ import 'package:edu_app/screens/detectionMode.dart';
 import 'package:edu_app/screens/forgotPass.dart';
 import 'package:edu_app/screens/playForm.dart';
 import 'package:edu_app/screens/playingMode.dart';
+import 'package:edu_app/screens/upsertVideo.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/login.dart';
@@ -62,6 +63,10 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/detectionMode',
           builder: (context, state) => DetectionMode(),
+        ),
+        GoRoute(
+          path: '/upsertVideo',
+          builder: (context, state) => UpsertVideo(),
         ),
         GoRoute(
           path: '/listVideo',

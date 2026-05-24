@@ -12,6 +12,11 @@ class VideoController extends GetxController {
   var videos = <VideoModel>[].obs;
   var isLoading = false.obs;
 
+  final formKey = GlobalKey<FormState>();
+
+  final urlController = TextEditingController();
+  final gradeController = TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
@@ -21,6 +26,44 @@ class VideoController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> upsertVideo(BuildContext context) async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    final url = urlController.text;
+    final grade = gradeController.text;
+
+    final req = VideoModel(url: url, grade: grade);
+    
+    try {
+      final response = await ApiServiceForm.postModel(
+        endpoint: 'upsert_video',
+        data: req.toJson(),
+        fromJson: (json) => VideoModel.fromJson(json),
+      );
+
+      if (response.status == true) {
+        context.go('/listVideo');
+        
+      } else {
+        AlertKsm.show(
+          context: context,
+          title: 'Info!',
+          message: response.message,
+          type: AlertType.info,
+        );
+      }
+    } catch (e) {
+      AlertKsm.show(
+        context: context,
+        title: 'Failed!',
+        message: e.toString(),
+        type: AlertType.warning,
+      );
+    } finally {}
   }
 
   Future<void> getVideo() async {
