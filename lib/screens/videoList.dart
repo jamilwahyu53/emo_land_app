@@ -69,7 +69,7 @@ class VideoList extends StatelessWidget {
                   //showDeleteButton: false,
                   //showDetailButton: false,
                   onDetailPressed: (video) {
-                    print('DETAIL ${video.url}');
+                    context.go('/upsertVideo?video_id=' + video.video_id);
                   },
 
                   onDeletePressed: (video) async {

@@ -16,6 +16,9 @@ class VideoController extends GetxController {
 
   final urlController = TextEditingController();
   final gradeController = TextEditingController();
+  String videoIdEdit = "";
+
+  bool _initialized = false;
 
   @override
   void onInit() {
@@ -28,7 +31,19 @@ class VideoController extends GetxController {
     super.onClose();
   }
 
-  Future<void> upsertVideo(BuildContext context) async {
+  Future<void> initialize(String? videoId) async {
+    if (_initialized) return;
+
+    _initialized = true;
+
+    if (videoId == null) return;
+
+    await getVideoById(videoId);
+  }
+
+
+
+  Future<void> upsertVideo(BuildContext context, String video_id) async {
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -36,7 +51,7 @@ class VideoController extends GetxController {
     final url = urlController.text;
     final grade = gradeController.text;
 
-    final req = VideoModel(url: url, grade: grade);
+    final req = VideoModel(video_id: video_id ?? "", url: url, grade: grade);
     
     try {
       final response = await ApiServiceForm.postModel(
@@ -79,6 +94,33 @@ class VideoController extends GetxController {
 
       if (response.status == true && response.data != null) {
         videos.value = response.data!;
+      } else {
+        print("Data kosong");
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> getVideoById(String video_id) async {
+    
+    final req = VideoModel(
+      video_id: video_id
+    );
+
+    try {
+      final response = await ApiServiceForm.postModel(
+        endpoint: 'get_video_by_id',
+        data: req.toJson(),
+        fromJson: (json) => VideoModel.fromJson(json),
+      );
+
+      if (response.status == true && response.data != null) {
+        videoIdEdit = video_id;
+        urlController.text = response.data!.url;
+        gradeController.text = response.data!.grade;
       } else {
         print("Data kosong");
       }

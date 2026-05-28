@@ -6,12 +6,18 @@ import '../controllers/videoController.dart';
 
 class UpsertVideo extends StatelessWidget {
 
+  final String? videoId;
   final VideoController controller = Get.put(VideoController());
 
-  UpsertVideo({super.key});
+  UpsertVideo({
+    super.key, 
+    this.videoId
+    });
 
   @override
   Widget build(BuildContext context) {
+    controller.initialize(videoId);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC), // Slate 50
       body: SafeArea(
@@ -24,9 +30,11 @@ class UpsertVideo extends StatelessWidget {
               children: [
                 const SizedBox(height: 32),
                 // 1. Title & Description
-                const Text(
-                  'Tambah Video',
-                  style: TextStyle(
+                Text(
+                  videoId == null ? 
+                  'Tambah Video'
+                  : 'Edit Video',
+                  style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w900,
                     color: Color(0xFF0F172A),
@@ -73,9 +81,9 @@ class UpsertVideo extends StatelessWidget {
                       const SizedBox(height: 24),
                      
                       CustomButton(
-                      label: "Simpan Video",
+                      label: videoId == null ? "Simpan Video" : "Edit Video" ,
                       widthBtn: double.infinity,
-                      onPressed: () => controller.upsertVideo(context)
+                      onPressed: () => controller.upsertVideo(context, videoId!)
                     ),
                       
                     ],

@@ -117,6 +117,11 @@ class _GenericDataTableState<T> extends State<GenericDataTable<T>> {
                               children: [
                                 if (widget.showDetailButton)
                                   ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+                                      minimumSize: Size(0, 0),
+                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    ),
                                     onPressed: () {
                                       if (widget.onDetailPressed != null) {
                                         widget.onDetailPressed!(item);
@@ -131,6 +136,9 @@ class _GenericDataTableState<T> extends State<GenericDataTable<T>> {
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.red,
+                                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+                                      minimumSize: Size(0, 0),
+                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                     ),
                                     onPressed: () {
                                       if (widget.onDeletePressed != null) {

@@ -66,7 +66,13 @@ final GoRouter appRouter = GoRouter(
         ),
         GoRoute(
           path: '/upsertVideo',
-          builder: (context, state) => UpsertVideo(),
+          builder: (context, state) {
+            final String? videoId = state.uri.queryParameters['video_id'];
+
+            return UpsertVideo(
+              videoId: videoId,
+            );
+          },
         ),
         GoRoute(
           path: '/listVideo',
