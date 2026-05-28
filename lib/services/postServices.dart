@@ -1,5 +1,8 @@
 // services/api_service.dart
 import 'dart:convert';
+import 'dart:io';
+import 'package:edu_app/models/luxandResponse.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/apiResponse.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -45,7 +48,8 @@ class ApiService {
 
 
 class ApiServiceForm {
-  static const String baseUrl = 'http://localhost:8000/api/';
+  static const String baseUrl = 'http://192.168.0.3:8000/api/';
+  static const String baseUrlLuxand = 'https://api.luxand.cloud/';
 
   static Future<ApiResponse<T>> postModel<T>({
     required String endpoint,
@@ -174,6 +178,55 @@ class ApiServiceForm {
 
       EasyLoading.dismiss();
 
+    }
+  }
+
+  static Future<LuxandResponse> postLuxandFile({
+    required String endpoint,
+    required File file,
+    required String fieldName,
+    required String token,
+  }) async {
+    try {
+      EasyLoading.show(status: 'Please Wait...');
+
+      final url = Uri.parse('$baseUrlLuxand$endpoint');
+
+      final request = http.MultipartRequest('POST', url);
+
+      request.headers.addAll({
+        'token': token,
+      });
+
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          fieldName,
+          file.path,
+        ),
+      );
+
+      final streamed = await request.send();
+      final response = await http.Response.fromStream(streamed);
+
+      final body = response.body;
+
+      debugPrint('STATUS: ${response.statusCode}');
+      debugPrint('BODY: $body');
+
+      if (body.trim().startsWith('<')) {
+        throw Exception('Luxand returned HTML error');
+      }
+
+      final json = jsonDecode(body);
+
+      if (response.statusCode >= 200 &&
+          response.statusCode < 300) {
+        return LuxandResponse.fromJson(json);
+      } else {
+        throw Exception(json['message'] ?? 'Upload failed');
+      }
+    } finally {
+      EasyLoading.dismiss();
     }
   }
 
