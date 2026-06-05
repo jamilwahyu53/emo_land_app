@@ -1,8 +1,10 @@
-import 'package:edu_app/screens/detectionMode.dart';
-import 'package:edu_app/screens/forgotPass.dart';
-import 'package:edu_app/screens/playForm.dart';
-import 'package:edu_app/screens/playingMode.dart';
-import 'package:edu_app/screens/upsertVideo.dart';
+import '../bindings/videoModeBinding.dart';
+import '../screens/detectionMode.dart';
+import '../screens/forgotPass.dart';
+import '../screens/playForm.dart';
+import '../screens/playingMode.dart';
+import '../screens/upsertVideo.dart';
+import '../screens/videoModeScreen.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/login.dart';
@@ -86,6 +88,13 @@ final GoRouter appRouter = GoRouter(
             }
 
             return VideoList();
+          },
+        ),
+        GoRoute(
+          path: '/videoMode',
+          builder: (context, state) {
+            VideoModeBinding().dependencies();
+            return VideoModeScreen();
           },
         ),
         GoRoute(

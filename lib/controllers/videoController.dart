@@ -43,7 +43,8 @@ class VideoController extends GetxController {
 
 
 
-  Future<void> upsertVideo(BuildContext context, String video_id) async {
+  Future<void> upsertVideo(BuildContext context, String? video_id) async {
+    
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -79,6 +80,7 @@ class VideoController extends GetxController {
         type: AlertType.warning,
       );
     } finally {}
+    
   }
 
   Future<void> getVideo() async {

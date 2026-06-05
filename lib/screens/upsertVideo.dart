@@ -83,7 +83,7 @@ class UpsertVideo extends StatelessWidget {
                       CustomButton(
                       label: videoId == null ? "Simpan Video" : "Edit Video" ,
                       widthBtn: double.infinity,
-                      onPressed: () => controller.upsertVideo(context, videoId!)
+                      onPressed: () => controller.upsertVideo(context, videoId)
                     ),
                       
                     ],

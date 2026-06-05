@@ -1,3 +1,4 @@
+import 'package:edu_app/controllers/playingModeController.dart';
 import 'package:flutter/material.dart';
 import 'package:edu_app/widgets/buttonKsm.dart';
 import 'package:edu_app/widgets/generalField.dart';
@@ -5,9 +6,9 @@ import 'package:edu_app/widgets/textLink.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
-class PlayingMode extends StatelessWidget {
+class PlayingMode extends GetView<PlayingModeController>  {
 
-  PlayingMode({super.key}); //digunakan untuk validasi
+  PlayingMode({super.key}); 
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +63,7 @@ class PlayingMode extends StatelessWidget {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(20),
                                 onTap: () {
-                                  print("Story Mode dipilih");
-                                  // TODO: navigasi / aksi kamu
+                                  context.go("/videoMode");
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(16),
