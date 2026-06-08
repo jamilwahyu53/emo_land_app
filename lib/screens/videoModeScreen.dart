@@ -1,22 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../controllers/VideoModeController.dart';
-import 'package:flutter/services.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class VideoModeScreen extends GetView<VideoModeController> {
-
-  VideoModeScreen({
-    super.key
-  });
+  const VideoModeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: 
-        Obx(() {
+      backgroundColor: Colors.black,
+      body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -27,70 +23,68 @@ class VideoModeScreen extends GetView<VideoModeController> {
 
         if (currentVideo == null) {
           return const Center(
-            child: Text("Tidak ada video"),
+            child: Text(
+              "Tidak ada video",
+              style: TextStyle(color: Colors.white),
+            ),
           );
         }
 
-        return Column(
-          children: [
-            // VIDEO PLAYER
-            YoutubePlayer(
-              controller: controller.youtubeController,
-              aspectRatio: 16 / 9,
-            ),
-
-            const SizedBox(height: 16),
-
-            Text(
-              currentVideo.grade,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        return SafeArea(
+          child: Column(
+            children: [
+              // AREA VIDEO (90%)
+              Expanded(
+                flex: 9,
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.black,
+                  child: Center(
+                    child: YoutubePlayer(
+                      controller: controller.youtubeController,
+                      aspectRatio: 16 / 9,
+                    ),
+                  ),
+                ),
               ),
-            ),
 
-            const SizedBox(height: 16),
+              // AREA TOMBOL (10%)
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  color: Colors.black,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: controller.previousVideo,
+                          icon: const Icon(Icons.skip_previous),
+                          label: const Text("Previous"),
+                        ),
+                      ),
 
-            // NEXT PREV
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: controller.previousVideo,
-                  child: const Text("Previous"),
+                      const SizedBox(width: 12),
+
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          //onPressed: controller.nextVideo,
+                          onPressed: () { context.go('/detectionFromQuestion'); },
+                          icon: const Icon(Icons.skip_next),
+                          label: const Text("Next"),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 12),
-                ElevatedButton(
-                  onPressed: controller.nextVideo,
-                  child: const Text("Next"),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            // DATATABLE LIST VIDEO
-            Expanded(
-              child: Obx(() {
-                return ListView.builder(
-                  itemCount: controller.videos.length,
-                  itemBuilder: (context, index) {
-                    final v = controller.videos[index];
-
-                    return ListTile(
-                      selected: index == controller.currentIndex.value,
-                      title: Text(v.url),
-                      onTap: () => controller.selectVideo(index),
-                    );
-                  },
-                );
-              }),
-            ),
-          ],
+              ),
+            ],
+          ),
         );
-      })
+      }),
     );
   }
-
-
 }

@@ -1,3 +1,5 @@
+import 'package:edu_app/bindings/detectionFromQuestion.dart';
+
 import '../bindings/videoModeBinding.dart';
 import '../screens/detectionMode.dart';
 import '../screens/forgotPass.dart';
@@ -5,6 +7,7 @@ import '../screens/playForm.dart';
 import '../screens/playingMode.dart';
 import '../screens/upsertVideo.dart';
 import '../screens/videoModeScreen.dart';
+import '../screens/detectionFromQuestionScreen.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/login.dart';
@@ -95,6 +98,13 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) {
             VideoModeBinding().dependencies();
             return VideoModeScreen();
+          },
+        ),
+        GoRoute(
+          path: '/detectionFromQuestion',
+          builder: (context, state) {
+            DetectionFromQuestion().dependencies();
+            return DetectionFromQuestionScreen();
           },
         ),
         GoRoute(

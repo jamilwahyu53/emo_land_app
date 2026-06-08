@@ -100,6 +100,7 @@ class VideoModeController extends GetxController {
     }
   }
 
+
   @override
   void onClose() {
     youtubeController.close();
