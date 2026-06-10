@@ -3,32 +3,42 @@ import 'dart:math';
 
 import 'package:camera/camera.dart';
 import 'package:edu_app/models/luxandResponse.dart';
-import 'package:edu_app/models/userModel.dart';
-import 'package:edu_app/services/staffServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import '../models/emotionModel.dart';
 import '../services/postServices.dart';
 import 'package:edu_app/widgets/alertKsm.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
 
-class DetectionFromQuestion extends GetxController {
+class DetectionFromQuestionController extends GetxController {
 
   final formKey = GlobalKey<FormState>();
 
   CameraController? cameraController;
 
-  final RxBool isInitialized = false.obs;
+  final isInitialized = false.obs;
+  final currentIndex = ''.obs;
 
+  final String videoId;
+
+  DetectionFromQuestionController(this.videoId);
 
   @override
   void onInit() {
     super.onInit();
 
     initCamera();
+
+    if (videoId == null || videoId!.isEmpty) {
+      currentIndex.value = '1';
+    } else {
+      currentIndex.value = videoId;
+    }
+
+    
+
   }
 
 Future<void> uploadToLuxand(BuildContext context, File file) async {

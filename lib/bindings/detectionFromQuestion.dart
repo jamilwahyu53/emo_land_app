@@ -1,11 +1,15 @@
-import 'package:edu_app/controllers/DetectionFromQuestion.dart';
+import 'package:edu_app/controllers/DetectionFromQuestionController.dart';
 import 'package:get/get.dart';
 
-class DetectionFromQuestion extends Bindings {
+class DetectionFromQuestionBinding extends Bindings {
+  final String videoId;
+
+  DetectionFromQuestionBinding(this.videoId);
+
   @override
   void dependencies() {
-    Get.lazyPut<DetectionFromQuestion>(
-      () => DetectionFromQuestion(),
+    Get.lazyPut<DetectionFromQuestionController>(
+      () => DetectionFromQuestionController(videoId),
       fenix: true,
     );
   }

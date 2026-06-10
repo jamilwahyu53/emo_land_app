@@ -19,6 +19,7 @@ class VideoModeScreen extends GetView<VideoModeController> {
           );
         }
 
+        final currentId = controller.currentVideo!.video_id;
         final currentVideo = controller.currentVideo;
 
         if (currentVideo == null) {
@@ -72,7 +73,7 @@ class VideoModeScreen extends GetView<VideoModeController> {
                       Expanded(
                         child: ElevatedButton.icon(
                           //onPressed: controller.nextVideo,
-                          onPressed: () { context.go('/detectionFromQuestion'); },
+                          onPressed: () { context.go('/detectionFromQuestion/' + currentId); },
                           icon: const Icon(Icons.skip_next),
                           label: const Text("Next"),
                         ),

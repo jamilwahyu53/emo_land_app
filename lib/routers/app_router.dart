@@ -96,14 +96,23 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/videoMode',
           builder: (context, state) {
-            VideoModeBinding().dependencies();
+            VideoModeBinding("").dependencies();
             return VideoModeScreen();
           },
         ),
         GoRoute(
-          path: '/detectionFromQuestion',
+          path: '/videoMode/:id',
           builder: (context, state) {
-            DetectionFromQuestion().dependencies();
+            final id = state.pathParameters['id']!;
+            VideoModeBinding(id).dependencies();
+            return VideoModeScreen();
+          },
+        ),
+        GoRoute(
+          path: '/detectionFromQuestion/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            DetectionFromQuestionBinding(id).dependencies();
             return DetectionFromQuestionScreen();
           },
         ),

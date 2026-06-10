@@ -1,22 +1,14 @@
  import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:edu_app/controllers/detectionController.dart';
+import 'package:edu_app/controllers/DetectionFromQuestionController.dart';
 import 'package:flutter/material.dart';
-import 'package:edu_app/widgets/buttonKsm.dart';
-import 'package:edu_app/widgets/generalField.dart';
-import 'package:edu_app/widgets/textLink.dart';
 import 'package:go_router/go_router.dart';
-import '../controllers/loginController.dart';
 import 'package:get/get.dart';
 
-class DetectionFromQuestionScreen extends StatelessWidget {
+class DetectionFromQuestionScreen extends GetView<DetectionFromQuestionController> {
 
   DetectionFromQuestionScreen({super.key}); 
-
-  final DetectionController controller = Get.put(
-    DetectionController(),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +136,7 @@ class DetectionFromQuestionScreen extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () async {
+                        /*
                         final path = await controller.takePicture();
 
                         if (path == null) return;
@@ -151,6 +144,8 @@ class DetectionFromQuestionScreen extends StatelessWidget {
                         final file = File(path);
 
                         await controller.uploadToLuxand(context, file);
+                        */
+                        context.go('/videoMode/' + controller.currentIndex.value);
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Row(

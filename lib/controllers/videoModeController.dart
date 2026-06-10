@@ -26,6 +26,10 @@ class VideoModeController extends GetxController {
     return videos[currentIndex.value];
   }
 
+  final String videoId;
+
+  VideoModeController(this.videoId);
+
   
   @override
   void onInit() {
@@ -38,13 +42,22 @@ class VideoModeController extends GetxController {
         url: "https://www.youtube.com/watch?v=l08Zw-RY__Q&list=RDBBpIV9A1PXc&index=13&pp=8AUB",
       ),
       VideoModel(
-        video_id: "1",
+        video_id: "2",
         grade: "HARD",
         url: "https://www.youtube.com/watch?v=YIza-jl2Kcs&list=RDBBpIV9A1PXc&index=14&pp=8AUB",
       )
     ]);
 
-    _loadVideo(videos.first);
+    if (videoId == null || videoId!.isEmpty) {
+      _loadVideo(videos.first);
+      return;
+    }
+
+    final video_dt = videos.firstWhere(
+      (v) => v.video_id == videoId,
+    );
+
+    _loadVideo(video_dt);
 
   }
 
