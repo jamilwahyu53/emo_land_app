@@ -13,7 +13,10 @@ class VideoModeScreen extends GetView<VideoModeController> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Obx(() {
-        if (controller.isLoading.value) {
+        final video = controller.myVideo.value;
+        final isReady = controller.isVideoReady.value;
+
+        if (controller.isLoading.value || video == null || !isReady ) {
           return const Center(
             child: CircularProgressIndicator(),
           );

@@ -2,11 +2,15 @@ class VideoModel<T> {
   final String video_id;
   final String url;
   final String grade;
+  final String title;
+  final String result;
 
   VideoModel({
     this.video_id = "",
     this.url = "",
     this.grade = "",
+    this.title = "",
+    this.result = "",
   });
 
   Map<String, dynamic> toJson() {
@@ -14,6 +18,8 @@ class VideoModel<T> {
       'video_id': video_id,
       'url': url,
       'grade': grade,
+      'title': title,
+      'result': result,
     };
   }
 
@@ -22,6 +28,8 @@ class VideoModel<T> {
       video_id: json['video_id'] ?? '',
       url: json['url'] ?? '',
       grade: json['grade'] ?? '',
+      title: json['title'] ?? '',
+      result: json['result'] ?? '',
     );
   }
 

@@ -9,9 +9,13 @@ class VideoModeBinding extends Bindings {
 
   @override
   void dependencies() {
+    // pastikan controller lama dibuang dulu
+    if (Get.isRegistered<VideoModeController>()) {
+      Get.delete<VideoModeController>(force: true);
+    }
+
     Get.lazyPut<VideoModeController>(
       () => VideoModeController(videoId),
-      fenix: true,
     );
   }
 }
