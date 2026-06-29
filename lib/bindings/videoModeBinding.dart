@@ -1,21 +1,23 @@
-import '../controllers/VideoModeController.dart';
+import 'package:edu_app/controllers/videoModeController.dart';
 import 'package:get/get.dart';
 
-class VideoModeBinding extends Bindings {
+class HistoryBinding extends Bindings {
+  final String? mode;
+  final int? stage;
 
-  final String videoId;
-
-  VideoModeBinding(this.videoId);
+  HistoryBinding({
+    this.mode,
+    this.stage,
+  });
 
   @override
   void dependencies() {
-    // pastikan controller lama dibuang dulu
-    if (Get.isRegistered<VideoModeController>()) {
-      Get.delete<VideoModeController>(force: true);
-    }
-
     Get.lazyPut<VideoModeController>(
-      () => VideoModeController(videoId),
+      () => VideoModeController(
+        mode: mode,
+        stage: stage,
+      ),
+      fenix: true,
     );
   }
 }

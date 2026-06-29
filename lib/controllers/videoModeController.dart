@@ -11,8 +11,9 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoModeController extends GetxController {
 
-  final String videoId;
-  VideoModeController(this.videoId);
+  final String? mode;
+  final int? stage;
+  VideoModeController({this.mode, this.stage});
 
   final isLoading = false.obs;
   final formKey = GlobalKey<FormState>();
@@ -34,34 +35,7 @@ class VideoModeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    
-    GetVideoById(videoId);
-    
-    /*
-    videos.assignAll([
-      VideoModel(
-        video_id: "1",
-        grade: "HARD",
-        url: "https://www.youtube.com/watch?v=l08Zw-RY__Q&list=RDBBpIV9A1PXc&index=13&pp=8AUB",
-      ),
-      VideoModel(
-        video_id: "2",
-        grade: "HARD",
-        url: "https://www.youtube.com/watch?v=YIza-jl2Kcs&list=RDBBpIV9A1PXc&index=14&pp=8AUB",
-      )
-    ]);
-
-    if (videoId == null || videoId!.isEmpty) {
-      _loadVideo(videos.first);
-      return;
-    }
-
-    final video_dt = videos.firstWhere(
-      (v) => v.video_id == videoId,
-    );
-    
-    _loadVideo(video_dt);
-    */
+        
 
   }
 

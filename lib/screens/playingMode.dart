@@ -1,8 +1,10 @@
 import 'package:edu_app/controllers/playingModeController.dart';
+import 'package:edu_app/widgets/alertKsm.dart';
 import 'package:flutter/material.dart';
 import 'package:edu_app/widgets/buttonKsm.dart';
 import 'package:edu_app/widgets/generalField.dart';
 import 'package:edu_app/widgets/textLink.dart';
+import 'package:edu_app/widgets/playMode.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,7 +65,23 @@ class PlayingMode extends GetView<PlayingModeController>  {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(20),
                                 onTap: () {
-                                  context.go("/videoMode");
+                                  PlayMode.show(
+                                    context: context,
+                                    title: "LEVEL",
+                                    message: "Pilih Level Permainan",
+                                    type: AlertType.info,
+
+                                    primaryButtonText: "EASY",
+                                    secondaryButtonText: "HARD",
+
+                                    onPrimaryPressed: () {
+                                      print("EASY MODE");
+                                    },
+
+                                    onSecondaryPressed: () {
+                                      print("HARD MODE");
+                                    },
+                                  );
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(16),

@@ -1,4 +1,5 @@
 import 'package:edu_app/bindings/detectionFromQuestion.dart';
+import 'package:edu_app/controllers/videoModeController.dart';
 
 import '../bindings/videoModeBinding.dart';
 import '../screens/detectionMode.dart';
@@ -96,16 +97,21 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/videoMode',
           builder: (context, state) {
-            VideoModeBinding("").dependencies();
-            return VideoModeScreen();
-          },
-        ),
-        GoRoute(
-          path: '/videoMode/:id',
-          builder: (context, state) {
-            final id = state.pathParameters['id']!;
-            VideoModeBinding(id).dependencies();
-            return VideoModeScreen();
+            final data = state.extra as Map<String, dynamic>?;
+
+            final mode = data?['mode'];
+            final stage = data?['stage'];
+
+            if (!Get.isRegistered<VideoModeController>()) {
+              Get.put(
+                VideoModeController(
+                  mode: mode,
+                  stage: stage,
+                ),
+              );
+            }
+
+            return const VideoModeScreen();
           },
         ),
         GoRoute(
