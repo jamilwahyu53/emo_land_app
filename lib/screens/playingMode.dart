@@ -75,7 +75,13 @@ class PlayingMode extends GetView<PlayingModeController>  {
                                     secondaryButtonText: "HARD",
 
                                     onPrimaryPressed: () {
-                                      print("EASY MODE");
+                                      context.go(
+                                        '/videoMode',
+                                        extra: {
+                                          'mode': "hard",
+                                          'stage': 1,
+                                        },
+                                      );
                                     },
 
                                     onSecondaryPressed: () {

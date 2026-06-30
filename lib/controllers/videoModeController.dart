@@ -1,4 +1,5 @@
 import 'package:edu_app/models/videoModel.dart';
+import 'package:edu_app/models/videoRequest.dart';
 import 'package:edu_app/services/postServices.dart';
 import 'package:edu_app/widgets/alertKsm.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,13 @@ class VideoModeController extends GetxController {
   final int? stage;
   VideoModeController({this.mode, this.stage});
 
-  final isLoading = false.obs;
+  late final dtMode = (mode ?? '').obs;
+  late  final currentIndex = (stage ?? 1).obs;
+
+  final isLoading = true.obs;
   final formKey = GlobalKey<FormState>();
   final videos = <VideoModel>[].obs;
-  final currentIndex = 0.obs;
+
   late YoutubePlayerController youtubeController;
   final isVideoReady = false.obs;
   final Rxn<VideoModel> myVideo = Rxn<VideoModel>();
@@ -36,7 +40,11 @@ class VideoModeController extends GetxController {
   void onInit() {
     super.onInit();
         
+    print("init");
+    print(currentIndex);
+    print(dtMode);
 
+    GetVideoById(dtMode.value, currentIndex.value);
   }
 
   void _loadVideo(VideoModel video) {
@@ -57,28 +65,33 @@ class VideoModeController extends GetxController {
   }
 
   void nextVideo() {
-    if (currentIndex.value < videos.length - 1) {
+    //if (currentIndex.value < videos.length - 1) {
       currentIndex.value++;
-
+      print(currentIndex.value);
+      GetVideoById(dtMode.value, currentIndex.value);
+      /*
       final video = videos[currentIndex.value];
       final videoId = YoutubePlayerController.convertUrlToId(video.url);
 
       if (videoId != null) {
         youtubeController.loadVideoById(videoId: videoId);
       }
-    }
+      */
+    //}
   }
 
   void previousVideo() {
-    if (currentIndex.value > 0) {
+    if (currentIndex.value > 1) {
       currentIndex.value--;
-
+      GetVideoById(dtMode.value, currentIndex.value);
+      /*
       final video = videos[currentIndex.value];
       final videoId = YoutubePlayerController.convertUrlToId(video.url);
 
       if (videoId != null) {
         youtubeController.loadVideoById(videoId: videoId);
       }
+      */
     }
   }
 
@@ -93,13 +106,9 @@ class VideoModeController extends GetxController {
     }
   }
 
-  void GetVideoById(String? video_id) async {
+  void GetVideoById(String mode, int stage) async {
     try {
-      final id = (video_id == null || video_id.isEmpty)
-        ? '1'
-        : video_id;
-
-      final req = VideoModel(video_id: id);
+      final req = VideoRequest(stage: stage, grade: mode);
       final response = await ApiServiceForm.postModel(
         endpoint: 'get_video_by_id',
         data: req.toJson(),
@@ -109,7 +118,7 @@ class VideoModeController extends GetxController {
       if (response.status == true) {
         print("resposne");
         print(response.data!.url);
-        
+        /*
         final myVid = VideoModel(
           video_id: response.data!.video_id,
           url: response.data!.url,
@@ -117,15 +126,18 @@ class VideoModeController extends GetxController {
           title: response.data!.title,
           result: response.data!.result,
         );
+        
         _loadVideo(myVid);
         myVideo.value = myVid;
-
+        */
       } else {
         print(response.message);
       }
     } catch (e) {
       print(e.toString());
-    } finally {}
+    } finally {
+      isLoading.value = false;
+    }
   }
 
 

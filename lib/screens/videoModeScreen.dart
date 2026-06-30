@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../controllers/VideoModeController.dart';
+import '../controllers/videoModeController.dart';
 
 class VideoModeScreen extends GetView<VideoModeController> {
   const VideoModeScreen({super.key});
@@ -13,15 +13,17 @@ class VideoModeScreen extends GetView<VideoModeController> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Obx(() {
-        final video = controller.myVideo.value;
-        final isReady = controller.isVideoReady.value;
+        
+        //final video = controller.myVideo.value;
+        //final isReady = controller.isVideoReady.value;
 
-        if (controller.isLoading.value || video == null || !isReady ) {
+        //if (controller.isLoading.value  || video == null || !isReady ) {
+        if(controller.isLoading.value == true) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-
+        /*
         final currentId = controller.currentVideo!.video_id;
         final currentVideo = controller.currentVideo;
 
@@ -33,11 +35,13 @@ class VideoModeScreen extends GetView<VideoModeController> {
             ),
           );
         }
+        */
 
         return SafeArea(
           child: Column(
             children: [
               // AREA VIDEO (90%)
+              /*
               Expanded(
                 flex: 9,
                 child: Container(
@@ -51,7 +55,7 @@ class VideoModeScreen extends GetView<VideoModeController> {
                   ),
                 ),
               ),
-
+              */
               // AREA TOMBOL (10%)
               Expanded(
                 flex: 1,
@@ -75,8 +79,7 @@ class VideoModeScreen extends GetView<VideoModeController> {
 
                       Expanded(
                         child: ElevatedButton.icon(
-                          //onPressed: controller.nextVideo,
-                          onPressed: () { context.go('/detectionFromQuestion/' + currentId); },
+                          onPressed: controller.nextVideo,
                           icon: const Icon(Icons.skip_next),
                           label: const Text("Next"),
                         ),
@@ -85,6 +88,7 @@ class VideoModeScreen extends GetView<VideoModeController> {
                   ),
                 ),
               ),
+              
             ],
           ),
         );

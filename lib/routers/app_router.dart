@@ -1,5 +1,5 @@
-import 'package:edu_app/bindings/detectionFromQuestion.dart';
-import 'package:edu_app/controllers/videoModeController.dart';
+import '../bindings/detectionFromQuestion.dart';
+import '../controllers/videoModeController.dart';
 
 import '../bindings/videoModeBinding.dart';
 import '../screens/detectionMode.dart';
@@ -94,16 +94,17 @@ final GoRouter appRouter = GoRouter(
             return VideoList();
           },
         ),
+        
         GoRoute(
           path: '/videoMode',
           builder: (context, state) {
             final data = state.extra as Map<String, dynamic>?;
-
+            
             final mode = data?['mode'];
             final stage = data?['stage'];
 
             if (!Get.isRegistered<VideoModeController>()) {
-              Get.put(
+              Get.lazyPut(() => 
                 VideoModeController(
                   mode: mode,
                   stage: stage,
@@ -114,6 +115,7 @@ final GoRouter appRouter = GoRouter(
             return const VideoModeScreen();
           },
         ),
+        
         GoRoute(
           path: '/detectionFromQuestion/:id',
           builder: (context, state) {
