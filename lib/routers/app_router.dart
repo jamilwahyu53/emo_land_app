@@ -1,3 +1,5 @@
+import 'package:edu_app/controllers/detectionFromQuestionController.dart';
+
 import '../bindings/detectionFromQuestion.dart';
 import '../controllers/videoModeController.dart';
 
@@ -101,7 +103,7 @@ final GoRouter appRouter = GoRouter(
             final data = state.extra as Map<String, dynamic>?;
             
             final mode = data?['mode'];
-            final stage = data?['stage'];
+            final stage = data?['stage'] as int?;
 
             if (!Get.isRegistered<VideoModeController>()) {
               Get.lazyPut(() => 
@@ -117,12 +119,34 @@ final GoRouter appRouter = GoRouter(
         ),
         
         GoRoute(
+          path: '/detectionFromQuestion',
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>?;
+            
+            final exResult = data?['exResult'];
+            final mode = data?['mode'];
+            final stage = data?['stage'] as int?;
+
+            if (!Get.isRegistered<DetectionFromQuestionController>()) {
+              Get.lazyPut(() => 
+                DetectionFromQuestionController(
+                  exResult: exResult,
+                  mode: mode,
+                  stage: stage,
+                ),
+              );
+            }
+
+            return DetectionFromQuestionScreen();
+          },
+          /*
           path: '/detectionFromQuestion/:id',
           builder: (context, state) {
             final id = state.pathParameters['id']!;
             DetectionFromQuestionBinding(id).dependencies();
             return DetectionFromQuestionScreen();
           },
+          */
         ),
         GoRoute(
           path: '/logout',

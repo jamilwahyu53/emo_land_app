@@ -14,30 +14,31 @@ import 'package:path_provider/path_provider.dart';
 
 class DetectionFromQuestionController extends GetxController {
 
+  final String? exResult;
+    final String? mode;
+  final int? stage;
+  DetectionFromQuestionController({this.exResult, this.mode, this.stage});
+
   final formKey = GlobalKey<FormState>();
 
   CameraController? cameraController;
 
   final isInitialized = false.obs;
-  final currentIndex = ''.obs;
+  late final currentResult =  (exResult ?? '').obs;
+  late final dtMode = (mode ?? '').obs;
+  late  final currentIndex = (stage ?? 1).obs;
 
-  final String videoId;
-
-  DetectionFromQuestionController(this.videoId);
-
+  
   @override
   void onInit() {
     super.onInit();
 
+    print("init");
+    print(currentResult);
+     print(currentIndex);
+    print(dtMode);
+
     initCamera();
-
-    if (videoId == null || videoId!.isEmpty) {
-      currentIndex.value = '1';
-    } else {
-      currentIndex.value = videoId;
-    }
-
-    
 
   }
 

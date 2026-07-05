@@ -1,11 +1,11 @@
 import 'package:edu_app/controllers/videoModeController.dart';
 import 'package:get/get.dart';
 
-class HistoryBinding extends Bindings {
+class Videomodebinding extends Bindings {
   final String? mode;
   final int? stage;
 
-  HistoryBinding({
+  Videomodebinding({
     this.mode,
     this.stage,
   });

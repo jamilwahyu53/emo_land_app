@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 
@@ -18,6 +19,7 @@ class VideoModeController extends GetxController {
 
   late final dtMode = (mode ?? '').obs;
   late  final currentIndex = (stage ?? 1).obs;
+  late  final currentResult = ''.obs;
 
   final isLoading = true.obs;
   final formKey = GlobalKey<FormState>();
@@ -27,11 +29,10 @@ class VideoModeController extends GetxController {
   final isVideoReady = false.obs;
   final Rxn<VideoModel> myVideo = Rxn<VideoModel>();
 
+  VideoPlayerController? player;
+
   VideoModel? get currentVideo {
-    /*
-    if (videos.isEmpty) return null;
-    return videos[currentIndex.value];
-    */
+ 
     if(myVideo.value == null) return null;
     return myVideo.value;
   }
@@ -65,33 +66,17 @@ class VideoModeController extends GetxController {
   }
 
   void nextVideo() {
-    //if (currentIndex.value < videos.length - 1) {
       currentIndex.value++;
       print(currentIndex.value);
       GetVideoById(dtMode.value, currentIndex.value);
-      /*
-      final video = videos[currentIndex.value];
-      final videoId = YoutubePlayerController.convertUrlToId(video.url);
-
-      if (videoId != null) {
-        youtubeController.loadVideoById(videoId: videoId);
-      }
-      */
-    //}
+ 
   }
 
   void previousVideo() {
     if (currentIndex.value > 1) {
       currentIndex.value--;
       GetVideoById(dtMode.value, currentIndex.value);
-      /*
-      final video = videos[currentIndex.value];
-      final videoId = YoutubePlayerController.convertUrlToId(video.url);
-
-      if (videoId != null) {
-        youtubeController.loadVideoById(videoId: videoId);
-      }
-      */
+    
     }
   }
 
@@ -118,18 +103,22 @@ class VideoModeController extends GetxController {
       if (response.status == true) {
         print("resposne");
         print(response.data!.url);
-        /*
-        final myVid = VideoModel(
-          video_id: response.data!.video_id,
-          url: response.data!.url,
-          grade: response.data!.grade,
-          title: response.data!.title,
-          result: response.data!.result,
+        currentResult.value = response.data!.result;
+
+        final myVideos = "http://192.168.0.3:8000/" + response.data!.url;
+
+        player = VideoPlayerController.networkUrl(
+          Uri.parse(myVideos),
         );
-        
-        _loadVideo(myVid);
-        myVideo.value = myVid;
-        */
+
+        await player!.initialize();
+
+        await player!.setLooping(true);
+        await player!.play();
+
+        update();
+
+
       } else {
         print(response.message);
       }
@@ -143,7 +132,7 @@ class VideoModeController extends GetxController {
 
   @override
   void onClose() {
-    youtubeController.close();
+    player?.dispose();
     super.onClose();
   }
 

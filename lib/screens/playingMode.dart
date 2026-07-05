@@ -78,14 +78,20 @@ class PlayingMode extends GetView<PlayingModeController>  {
                                       context.go(
                                         '/videoMode',
                                         extra: {
-                                          'mode': "hard",
+                                          'mode': "easy",
                                           'stage': 1,
                                         },
                                       );
                                     },
 
                                     onSecondaryPressed: () {
-                                      print("HARD MODE");
+                                      context.go(
+                                        '/videoMode',
+                                        extra: {
+                                          'mode': "hard",
+                                          'stage': 1,
+                                        },
+                                      );
                                     },
                                   );
                                 },

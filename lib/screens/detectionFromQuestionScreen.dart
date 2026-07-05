@@ -1,7 +1,7 @@
  import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:edu_app/controllers/DetectionFromQuestionController.dart';
+import 'package:edu_app/controllers/detectionFromQuestionController.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
@@ -145,7 +145,14 @@ class DetectionFromQuestionScreen extends GetView<DetectionFromQuestionControlle
 
                         await controller.uploadToLuxand(context, file);
                         */
-                        context.go('/videoMode/' + controller.currentIndex.value);
+                        //context.go('/videoMode/' + controller.currentIndex.value);
+                        context.push(
+                                '/videoMode',
+                                extra: {
+                                  'mode': controller.dtMode.value,
+                                  'stage': controller.currentIndex.value + 1,
+                                },
+                              );
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Row(
