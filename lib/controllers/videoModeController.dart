@@ -20,6 +20,7 @@ class VideoModeController extends GetxController {
   late final dtMode = (mode ?? '').obs;
   late  final currentIndex = (stage ?? 1).obs;
   late  final currentResult = ''.obs;
+  late final max_video = 0.obs;
 
   final isLoading = true.obs;
   final formKey = GlobalKey<FormState>();
@@ -64,13 +65,21 @@ class VideoModeController extends GetxController {
     isVideoReady.value = true;
     
   }
+  // di VideoModeController
+void goToNextScreen(BuildContext context) {
+  final exResult = currentResult.value;
+  final mode = dtMode.value;
+  final stage = currentIndex.value;
 
-  void nextVideo() {
-      currentIndex.value++;
-      print(currentIndex.value);
-      GetVideoById(dtMode.value, currentIndex.value);
- 
-  }
+  player?.pause();
+
+  context.go(
+    '/detectionFromQuestion',
+    extra: {'exResult': exResult, 'mode': mode, 'stage': stage, 'max_video' : max_video.value},
+  );
+
+  Get.delete<VideoModeController>(force: true);
+}
 
   void previousVideo() {
     if (currentIndex.value > 1) {
@@ -103,7 +112,9 @@ class VideoModeController extends GetxController {
       if (response.status == true) {
         print("resposne");
         print(response.data!.url);
+        print(response.data!.max_video);
         currentResult.value = response.data!.result;
+        max_video.value = response.data!.max_video;
 
         final myVideos = "http://192.168.0.3:8000/" + response.data!.url;
 
@@ -120,9 +131,11 @@ class VideoModeController extends GetxController {
 
 
       } else {
+        print("response gagal");
         print(response.message);
       }
     } catch (e) {
+      print("resonse error");
       print(e.toString());
     } finally {
       isLoading.value = false;
@@ -132,6 +145,7 @@ class VideoModeController extends GetxController {
 
   @override
   void onClose() {
+    print("VideoModeController disposed");
     player?.dispose();
     super.onClose();
   }

@@ -25,7 +25,7 @@ class VideoModeScreen extends GetView<VideoModeController> {
               /// Video
             SizedBox.expand(
               child: FittedBox(
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 child: SizedBox(
                   width: controller.player!.value.size.width,
                   height: controller.player!.value.size.height,
@@ -53,16 +53,7 @@ class VideoModeScreen extends GetView<VideoModeController> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 //onTap: controller.nextVideo,
-                onTap: () {
-                  context.go(
-                    '/detectionFromQuestion',
-                     extra: {
-                      'exResult': controller.currentResult.value,
-                      'mode': controller.dtMode.value,
-                      'stage': controller.currentIndex.value,
-                    },
-                  );
-                },
+                onTap: () => controller.goToNextScreen(context),
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2,
                   color: Colors.transparent,

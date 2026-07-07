@@ -135,8 +135,11 @@ class DetectionFromQuestionScreen extends GetView<DetectionFromQuestionControlle
                       ],
                     ),
                     child: InkWell(
-                      onTap: () async {
-                        /*
+                      onTap: ()  => controller.goToNextScreen(context) 
+                      
+                      /*
+                      async {
+                        
                         final path = await controller.takePicture();
 
                         if (path == null) return;
@@ -144,16 +147,9 @@ class DetectionFromQuestionScreen extends GetView<DetectionFromQuestionControlle
                         final file = File(path);
 
                         await controller.uploadToLuxand(context, file);
-                        */
-                        //context.go('/videoMode/' + controller.currentIndex.value);
-                        context.push(
-                                '/videoMode',
-                                extra: {
-                                  'mode': controller.dtMode.value,
-                                  'stage': controller.currentIndex.value + 1,
-                                },
-                              );
-                      },
+                        
+                      }
+                      */,
                       borderRadius: BorderRadius.circular(12),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

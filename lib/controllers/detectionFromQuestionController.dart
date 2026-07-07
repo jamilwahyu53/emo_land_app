@@ -15,9 +15,10 @@ import 'package:path_provider/path_provider.dart';
 class DetectionFromQuestionController extends GetxController {
 
   final String? exResult;
-    final String? mode;
+  final String? mode;
   final int? stage;
-  DetectionFromQuestionController({this.exResult, this.mode, this.stage});
+  final int? max_video;
+  DetectionFromQuestionController({this.exResult, this.mode, this.stage, this.max_video});
 
   final formKey = GlobalKey<FormState>();
 
@@ -26,7 +27,8 @@ class DetectionFromQuestionController extends GetxController {
   final isInitialized = false.obs;
   late final currentResult =  (exResult ?? '').obs;
   late final dtMode = (mode ?? '').obs;
-  late  final currentIndex = (stage ?? 1).obs;
+  late final currentIndex = (stage ?? 1).obs;
+  late final maxVideo = (max_video ?? 1).obs;
 
   
   @override
@@ -35,8 +37,9 @@ class DetectionFromQuestionController extends GetxController {
 
     print("init");
     print(currentResult);
-     print(currentIndex);
+    print(currentIndex);
     print(dtMode);
+    print(maxVideo);
 
     initCamera();
 
@@ -76,7 +79,7 @@ Future<void> uploadToLuxand(BuildContext context, File file) async {
   }
 }
 
-  Future<String?> takePicture() async {
+Future<String?> takePicture() async {
     try {
       if (cameraController == null ||
           !cameraController!.value.isInitialized) {
@@ -125,6 +128,32 @@ Future<void> uploadToLuxand(BuildContext context, File file) async {
 
     } catch (e) {
       debugPrint('Camera error: $e');
+    }
+  }
+
+  void goToNextScreen(BuildContext context) {
+    final stage = currentIndex.value + 1;
+
+    print("next stage");
+    print(stage);
+    print(maxVideo);
+    print("end stage");
+
+    if(stage > maxVideo.value){
+      AlertKsm.show(
+        context: context,
+        title: 'Info!',
+        message: "VIDEO MAX BOS",
+        type: AlertType.info,
+      );
+    }
+    else {
+      context.go(
+        '/videoMode',
+        extra: {'mode': dtMode.value, 'stage': stage},
+      );
+
+      Get.delete<DetectionFromQuestionController>(force: true);
     }
   }
   

@@ -5,11 +5,13 @@ class DetectionFromQuestionBinding extends Bindings {
   final String? exResult;
   final String? mode;
   final int? stage;
+  final int? max_video;
 
   DetectionFromQuestionBinding({
     this.exResult,
     this.mode,
     this.stage,
+    this.max_video,
   });
 
   @override
@@ -19,6 +21,7 @@ class DetectionFromQuestionBinding extends Bindings {
         exResult: exResult,
         mode: mode,
         stage: stage,
+        max_video: max_video,
       ),
       fenix: true,
     );

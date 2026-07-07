@@ -126,6 +126,7 @@ final GoRouter appRouter = GoRouter(
             final exResult = data?['exResult'];
             final mode = data?['mode'];
             final stage = data?['stage'] as int?;
+            final max_video = data?['max_video'] as int?;
 
             if (!Get.isRegistered<DetectionFromQuestionController>()) {
               Get.lazyPut(() => 
@@ -133,6 +134,7 @@ final GoRouter appRouter = GoRouter(
                   exResult: exResult,
                   mode: mode,
                   stage: stage,
+                  max_video: max_video,
                 ),
               );
             }

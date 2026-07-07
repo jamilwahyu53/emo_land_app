@@ -4,6 +4,7 @@ class VideoModel<T> {
   final String grade;
   final String title;
   final String result;
+  final int max_video;
 
   VideoModel({
     this.video_id = "",
@@ -11,6 +12,7 @@ class VideoModel<T> {
     this.grade = "",
     this.title = "",
     this.result = "",
+    this.max_video = 0,
   });
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ class VideoModel<T> {
       'grade': grade,
       'title': title,
       'result': result,
+      'max_video': max_video,
     };
   }
 
@@ -30,6 +33,7 @@ class VideoModel<T> {
       grade: json['grade'] ?? '',
       title: json['title'] ?? '',
       result: json['result'] ?? '',
+      max_video: json['max_video'] ?? '',
     );
   }
 
