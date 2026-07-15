@@ -140,12 +140,19 @@ Future<String?> takePicture() async {
     print("end stage");
 
     if(stage > maxVideo.value){
+      /*
       AlertKsm.show(
         context: context,
         title: 'Info!',
         message: "VIDEO MAX BOS",
         type: AlertType.info,
       );
+      */
+      context.go(
+        '/Result',
+      );
+
+      Get.delete<DetectionFromQuestionController>(force: true);
     }
     else {
       context.go(

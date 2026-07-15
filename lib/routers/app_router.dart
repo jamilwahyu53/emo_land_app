@@ -1,4 +1,6 @@
+import 'package:edu_app/controllers/ResultController.dart';
 import 'package:edu_app/controllers/detectionFromQuestionController.dart';
+import 'package:edu_app/screens/ResultScreen.dart';
 
 import '../bindings/detectionFromQuestion.dart';
 import '../controllers/videoModeController.dart';
@@ -149,6 +151,20 @@ final GoRouter appRouter = GoRouter(
             return DetectionFromQuestionScreen();
           },
           */
+        ),
+        GoRoute(
+          path: '/result',
+          builder: (context, state) {
+            
+            if (!Get.isRegistered<ResultController>()) {
+              Get.lazyPut(() => 
+                ResultController(),
+              );
+            }
+
+            return ResultScreen();
+          },
+          
         ),
         GoRoute(
           path: '/logout',
