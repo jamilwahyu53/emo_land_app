@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:camera/camera.dart';
 import 'package:edu_app/models/luxandResponse.dart';
+import 'package:edu_app/models/saveResultModel.dart';
+import 'package:edu_app/services/staffServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -30,6 +32,8 @@ class DetectionFromQuestionController extends GetxController {
   late final currentIndex = (stage ?? 1).obs;
   late final maxVideo = (max_video ?? 1).obs;
 
+  final storage = StaffServices();
+  
   
   @override
   void onInit() {
@@ -58,6 +62,9 @@ Future<void> uploadToLuxand(BuildContext context, File file) async {
 
     final emotion = face.dominantEmotion;
 
+    print("face data");
+    print(res.status);
+    //debugPrint('Luxand response: $res.status');
     //debugPrint('Luxand response: $face');
     //debugPrint('Luxand emotion: $emotion');
 
@@ -70,6 +77,7 @@ Future<void> uploadToLuxand(BuildContext context, File file) async {
 
   } catch (e) {
     //debugPrint('Luxand upload error: $e');
+    print(e);
     AlertKsm.show(
       context: context,
       title: 'Error!',
@@ -131,13 +139,15 @@ Future<String?> takePicture() async {
     }
   }
 
-  void goToNextScreen(BuildContext context) {
+  
+  Future<void> goToNextScreen(BuildContext context) async {
     final stage = currentIndex.value + 1;
-
+    /*
     print("next stage");
     print(stage);
     print(maxVideo);
     print("end stage");
+*/
 
     if(stage > maxVideo.value){
       /*
@@ -148,6 +158,7 @@ Future<String?> takePicture() async {
         type: AlertType.info,
       );
       */
+
       context.go(
         '/Result',
       );
@@ -155,12 +166,42 @@ Future<String?> takePicture() async {
       Get.delete<DetectionFromQuestionController>(force: true);
     }
     else {
+
+      final getStorage = await storage.getStaff();
+      //print("user storage");
+      //print(getStorage?.user_id);
+      //print(getStorage?.full_name);
+
+      String userId = getStorage!.user_id;
+
+      final req = SaveResultModel(user_id: userId, result: 4);
+    
+      final response = await ApiServiceForm.postModel(
+        endpoint: 'save-result-emo',
+        data: req.toJson(),
+        fromJson: (json) => SaveResultModel.fromJson(json),
+      );
+
+      if (response.status == true) {
+        print("result");
+        print(response.data);
+      } else {
+        AlertKsm.show(
+          context: context,
+          title: 'Info!',
+          message: response.message,
+          type: AlertType.info,
+        );
+      }
+
+      /*
       context.go(
         '/videoMode',
         extra: {'mode': dtMode.value, 'stage': stage},
       );
 
       Get.delete<DetectionFromQuestionController>(force: true);
+      */
     }
   }
   

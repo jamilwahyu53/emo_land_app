@@ -136,7 +136,6 @@ class DetectionFromQuestionScreen extends GetView<DetectionFromQuestionControlle
                     ),
                     child: InkWell(
                       onTap: ()  => controller.goToNextScreen(context) 
-                      
                       /*
                       async {
                         
@@ -148,8 +147,8 @@ class DetectionFromQuestionScreen extends GetView<DetectionFromQuestionControlle
 
                         await controller.uploadToLuxand(context, file);
                         
-                      }
-                      */,
+                      }*/
+                      ,
                       borderRadius: BorderRadius.circular(12),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
