@@ -46,7 +46,6 @@ class ApiService {
   }
 }
 
-
 class ApiServiceForm {
   static const String baseUrl = 'http://192.168.0.3:8000/api/';
   static const String baseUrlLuxand = 'https://api.luxand.cloud/';
@@ -61,6 +60,9 @@ class ApiServiceForm {
     try {
       EasyLoading.show(status: 'Please Wait...');
       final url = Uri.parse('$baseUrl$endpoint');
+      final requestBody = data.map(
+        (key, value) => MapEntry(key, value.toString()),
+      );
 
       final response = await http.post(
         url,
@@ -68,7 +70,7 @@ class ApiServiceForm {
           'Content-Type': 'application/x-www-form-urlencoded',
           ...?headers,
         },
-        body: data.map((key, value) => MapEntry(key, value.toString())),
+        body: requestBody,
       );
 
       final body = jsonDecode(response.body);
@@ -104,10 +106,7 @@ class ApiServiceForm {
 
       final response = await http.get(
         uri,
-        headers: {
-          'Accept': 'application/json',
-          ...?headers,
-        },
+        headers: {'Accept': 'application/json', ...?headers},
       );
 
       final body = jsonDecode(response.body);
@@ -130,54 +129,37 @@ class ApiServiceForm {
     required T Function(Map<String, dynamic>) fromJson,
     Map<String, String>? headers,
   }) async {
-
     try {
-
       EasyLoading.show(status: 'Please Wait...');
 
       final uri = Uri.parse('$baseUrl$endpoint').replace(
         queryParameters: data.map(
-          (key, value) => MapEntry(
-            key,
-            value.toString(),
-          ),
+          (key, value) => MapEntry(key, value.toString()),
         ),
       );
 
       final response = await http.get(
         uri,
-        headers: {
-          'Accept': 'application/json',
-          ...?headers,
-        },
+        headers: {'Accept': 'application/json', ...?headers},
       );
 
       final body = jsonDecode(response.body);
 
-      if (response.statusCode >= 200 &&
-          response.statusCode < 300) {
-
-        final List<dynamic> jsonList =
-            body['data'] ?? [];
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final List<dynamic> jsonList = body['data'] ?? [];
 
         return ApiResponse<List<T>>(
           status: body['status'] ?? false,
           message: body['message'] ?? '',
-          data: jsonList
-              .map((e) => fromJson(e))
-              .toList(),
+          data: jsonList.map((e) => fromJson(e)).toList(),
         );
       }
 
       throw Exception(
-        body['message'] ??
-        'Terjadi kesalahan saat mengambil data',
+        body['message'] ?? 'Terjadi kesalahan saat mengambil data',
       );
-
     } finally {
-
       EasyLoading.dismiss();
-
     }
   }
 
@@ -194,15 +176,10 @@ class ApiServiceForm {
 
       final request = http.MultipartRequest('POST', url);
 
-      request.headers.addAll({
-        'token': token,
-      });
+      request.headers.addAll({'token': token});
 
       request.files.add(
-        await http.MultipartFile.fromPath(
-          fieldName,
-          file.path,
-        ),
+        await http.MultipartFile.fromPath(fieldName, file.path),
       );
 
       final streamed = await request.send();
@@ -219,8 +196,7 @@ class ApiServiceForm {
 
       final json = jsonDecode(body);
 
-      if (response.statusCode >= 200 &&
-          response.statusCode < 300) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         return LuxandResponse.fromJson(json);
       } else {
         throw Exception(json['message'] ?? 'Upload failed');
@@ -229,6 +205,4 @@ class ApiServiceForm {
       EasyLoading.dismiss();
     }
   }
-
-
 }

@@ -2,10 +2,8 @@ import 'package:edu_app/controllers/ResultController.dart';
 import 'package:edu_app/controllers/detectionFromQuestionController.dart';
 import 'package:edu_app/screens/ResultScreen.dart';
 
-import '../bindings/detectionFromQuestion.dart';
 import '../controllers/videoModeController.dart';
 
-import '../bindings/videoModeBinding.dart';
 import '../screens/detectionMode.dart';
 import '../screens/forgotPass.dart';
 import '../screens/playForm.dart';
@@ -45,27 +43,18 @@ final GoRouter appRouter = GoRouter(
   },
 
   routes: [
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => LoginScreen(),
-    ),
+    GoRoute(path: '/login', builder: (context, state) => LoginScreen()),
     ShellRoute(
       builder: (context, state, child) {
         return DashboardWrapper(child: child); // child valid
       },
-      routes: [  
+      routes: [
         GoRoute(
           path: '/registerStaff',
           builder: (context, state) => RegisterStaff(),
         ),
-        GoRoute(
-          path: '/forgotPass',
-          builder: (context, state) => Forgotpass(),
-        ),
-        GoRoute(
-          path: '/playForm',
-          builder: (context, state) => PlayForm(),
-        ),
+        GoRoute(path: '/forgotPass', builder: (context, state) => Forgotpass()),
+        GoRoute(path: '/playForm', builder: (context, state) => PlayForm()),
         GoRoute(
           path: '/playingMode',
           builder: (context, state) => PlayingMode(),
@@ -79,9 +68,7 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) {
             final String? videoId = state.uri.queryParameters['video_id'];
 
-            return UpsertVideo(
-              videoId: videoId,
-            );
+            return UpsertVideo(videoId: videoId);
           },
         ),
         GoRoute(
@@ -98,48 +85,45 @@ final GoRouter appRouter = GoRouter(
             return VideoList();
           },
         ),
-        
+
         GoRoute(
           path: '/videoMode',
           builder: (context, state) {
             final data = state.extra as Map<String, dynamic>?;
-            
+
             final mode = data?['mode'];
             final stage = data?['stage'] as int?;
 
             if (!Get.isRegistered<VideoModeController>()) {
-              Get.lazyPut(() => 
-                VideoModeController(
-                  mode: mode,
-                  stage: stage,
-                ),
-              );
+              Get.lazyPut(() => VideoModeController(mode: mode, stage: stage));
             }
 
             return const VideoModeScreen();
           },
         ),
-        
+
         GoRoute(
           path: '/detectionFromQuestion',
           builder: (context, state) {
             final data = state.extra as Map<String, dynamic>?;
-            
+
             final exResult = data?['exResult'];
             final mode = data?['mode'];
             final stage = data?['stage'] as int?;
             final max_video = data?['max_video'] as int?;
 
-            if (!Get.isRegistered<DetectionFromQuestionController>()) {
-              Get.lazyPut(() => 
-                DetectionFromQuestionController(
-                  exResult: exResult,
-                  mode: mode,
-                  stage: stage,
-                  max_video: max_video,
-                ),
-              );
+            if (Get.isRegistered<DetectionFromQuestionController>()) {
+              Get.delete<DetectionFromQuestionController>(force: true);
             }
+
+            Get.put(
+              DetectionFromQuestionController(
+                exResult: exResult,
+                mode: mode,
+                stage: stage,
+                max_video: max_video,
+              ),
+            );
 
             return DetectionFromQuestionScreen();
           },
@@ -155,16 +139,17 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/result',
           builder: (context, state) {
-            
-            if (!Get.isRegistered<ResultController>()) {
-              Get.lazyPut(() => 
-                ResultController(),
-              );
+            final data = state.extra as Map<String, dynamic>?;
+            final mode = data?['mode'] as String?;
+
+            if (Get.isRegistered<ResultController>()) {
+              Get.delete<ResultController>(force: true);
             }
+
+            Get.put(ResultController(mode: mode));
 
             return ResultScreen();
           },
-          
         ),
         GoRoute(
           path: '/logout',
@@ -175,6 +160,5 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
-
   ],
 );

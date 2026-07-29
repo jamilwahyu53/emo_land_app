@@ -69,7 +69,7 @@ Future<void> uploadToLuxand(BuildContext context, File file) async {
       endpoint: 'photo/emotions',
       file: file,
       fieldName: 'photo',
-      token: '075d3aa7938c46b3aa2fa0cfd158a6c9',
+      token: '155b714028c74f5d8e72d6e283b4f8af',
     );
 
     final face = res.faces.first;

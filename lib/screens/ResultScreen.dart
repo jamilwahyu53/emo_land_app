@@ -13,9 +13,7 @@ class ResultScreen extends GetView<ResultController> {
       backgroundColor: Colors.black,
       body: Obx(() {
         if (controller.isLoading.value == true) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         return Container(
@@ -70,50 +68,34 @@ class ResultScreen extends GetView<ResultController> {
 
                           const SizedBox(height: 24),
 
-                          const Text(
-                            'NAMA : ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          const Text(
-                            '-',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          const SizedBox(height: 6),
-
-                          const Text(
-                            'STARS : ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          const SizedBox(height: 6),
-
-                          const Text(
-                            '-',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          Obx(() {
+                            return Text(
+                              'Nama : ${controller.fullName.value.isEmpty ? '-' : controller.fullName.value}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }),
 
                           const SizedBox(height: 12),
 
+                          Obx(() {
+                            return Text(
+                              'Bintang : ${controller.averageStars.value.isEmpty ? '-' : controller.averageStars.value}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }),
+
+                          const SizedBox(height: 18),
+
                           const Text(
-                            'Teruslah belajar ekspresi hingga kamu memperoleh bintang yang lebih banyak lagi',
+                            'Teruslah belajar ekspresi hingga kamu memperoleh bintang yang lebih banyak lagi!!',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 21,
@@ -125,9 +107,60 @@ class ResultScreen extends GetView<ResultController> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 18),
 
-                    // ==== TOMBOL ULANGI LAGI ====
+                    Obx(() {
+                      if (controller.stages.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+
+                      return Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            columnSpacing: 18,
+                            headingTextStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                            ),
+                            columns: const [
+                              DataColumn(label: Text('Stage')),
+                              DataColumn(label: Text('Mode')),
+                              DataColumn(label: Text('Value')),
+                              DataColumn(label: Text('Tanggal')),
+                            ],
+                            rows: controller.stages.map((stage) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(Text('${stage['stage'] ?? '-'}')),
+                                  DataCell(Text('${stage['mode'] ?? '-'}')),
+                                  DataCell(Text('${stage['value'] ?? '-'}')),
+                                  DataCell(
+                                    Text('${stage['created_at'] ?? '-'}'),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      );
+                    }),
+
+                    const SizedBox(height: 18),
+
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -141,20 +174,22 @@ class ResultScreen extends GetView<ResultController> {
                           elevation: 4,
                         ),
                         onPressed: () {
-                          // TODO: sesuaikan aksi restart kuis kamu di sini,
-                          // misalnya controller.resetQuiz() sebelum navigasi.
-                          context.go(
-                                  '/playForm',
-                                );
-
-                                Get.delete<ResultController>(force: true);
+                          context.go('/playForm');
+                          Get.delete<ResultController>(force: true);
                         },
-                        child: const Text(
-                          'BERMAIN LAGI',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.arrow_back),
+                            SizedBox(width: 8),
+                            Text(
+                              'KEMBALI',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
